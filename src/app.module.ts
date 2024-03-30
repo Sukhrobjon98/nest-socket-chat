@@ -16,6 +16,7 @@ import { MessagesModule } from './messages/messages.module';
         JwtModule.register({
             secret: 'secret',
             signOptions: { expiresIn: '5m' },
+            global: true,
         }),
         MessagesModule
     ],

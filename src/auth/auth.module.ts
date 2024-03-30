@@ -12,7 +12,7 @@ import { JwtWebsocketGuard } from './jwt-websocket.guard';
         inject: [ConfigService],
         useFactory: (configService: ConfigService) => ({
             secret: configService.get('JWT_SECRET'),
-            signOptions: { expiresIn: '5m' },
+            signOptions: { expiresIn: '1d' },
         }),
     })],
 })
