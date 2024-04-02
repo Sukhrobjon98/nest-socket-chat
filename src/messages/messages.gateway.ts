@@ -30,7 +30,7 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
 
     }) => {
       socket.broadcast.emit('userDisconnected', client.user_id);
-  
+
       if (client.id == client.id) {
         this.clinets.delete(client);
       }
@@ -39,22 +39,24 @@ export class MessagesGateway implements OnGatewayConnection, OnGatewayDisconnect
 
   @SubscribeMessage('sendMessage')
   async sendMessage(@MessageBody() createMessageDto: CreateMessageDto, @ConnectedSocket() socket: Socket) {
+
+    let message = await this.messagesService.create(createMessageDto)
+
     this.clinets.forEach((client: {
       user_id: string,
       id: string
 
     }) => {
-      if (client.user_id == createMessageDto.receiver) {
-        socket.to(client.id).emit('newMessage', createMessageDto);
+      
+      if (client.user_id == createMessageDto.receiver || client.user_id == createMessageDto.sender) {
+        socket.to(client.id).emit('newMessage', message);
       }
-      else if (client.user_id == createMessageDto.sender) {
-        socket.to(client.id).emit('newMessage', createMessageDto);
-      }
+      
     })
 
 
 
-    return this.messagesService.create(createMessageDto);
+    return message;
   }
 
 

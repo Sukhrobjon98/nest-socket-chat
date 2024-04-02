@@ -6,7 +6,12 @@ import { JwtWebsocketGuard } from 'src/auth/jwt-websocket.guard'
 import { Socket } from 'socket.io'
 import { JwtService } from '@nestjs/jwt'
 
-@WebSocketGateway({})
+@WebSocketGateway({
+    cors: {
+        origin: '*',
+        methods: ['GET', 'POST'],
+    },
+})
 export class UserGateway implements OnGatewayConnection, OnGatewayDisconnect {
     constructor(private readonly userService: UserService, private jwtService: JwtService) { }
     async handleDisconnect(client: Socket) {
